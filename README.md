@@ -1,4 +1,37 @@
+### Rnn Predicor
+---
 
+#### TO-DO List
+A guideline 
+- [ ] **Documentation**
+    - [ ] add architecture diagram
+    - [ ] explain folder structure
+    - [ ] how to run the repository (setup)
+    - [ ] create a TO-DO list
+- [ ] **Model**
+    - [x] implement basic architecture supporting LSTM cell and MLP currently taking as input an independent series of days and outputs a prediction for a specific number of days 
+    - [ ] idd model for embedding static data (population information) 
+    - [ ] implement a deeper model (add support for multi cell architecture)
+    - [ ] find a way to personalize a model for each country (possibilities: train globally and finetune for each country, investigate the "Social" approach.   
+    
+- [ ] **Data**
+    - [x] implent naive handler class for raw **Kaggle Data** that takes data from all countries, merges them(stack), and apply a sliding windows to create batches 
+    - [x] naive method for spliting the data (train/test)
+    - [ ] investigate the option for doing cross validation
+    - [ ] improve how the train/test data is splited (currently randomly select from batches)
+    - [ ] investigate if logarithmic scaling can produce results is benefical
+    - [x] add data augmentation (like addition, and scaling)
+    - [x] dowload and process external data from **rescountries.eu**
+    - [ ] add support for population data from **rescountries.eu**
+    
+- **Utils**
+     - [x] add data online visualization of training process (loss, evaluate, learning rate scheduling)
+     - [ ] add support for online prediction of all countries 
+     
+- **Kaggle**
+    - [ ] add script for creating submissions
+     
+---
 
 ### Data Analysis
 #### SIR (Susceptible Infected Recovered/Deceased) model

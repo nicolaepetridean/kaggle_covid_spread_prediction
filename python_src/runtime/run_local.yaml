@@ -6,7 +6,7 @@ training:
   algorithms: xgboost, adaboost
 
 external_data_dir:
-  rel_paths: '\..\data\in\external_data'
+  rel_paths: '..\data\in\external_data'
 
 # only for inference
 inference:

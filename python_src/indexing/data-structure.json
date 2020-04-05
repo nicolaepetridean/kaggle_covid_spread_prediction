@@ -1,0 +1,25 @@
+PUT /cntm_measures
+{
+  "mappings" : {
+    "properties": {
+      "keywords": {
+        "type": "keyword"
+      },
+      "applies_to": {
+        "type": "keyword"
+      },
+      "start_date": {
+        "type": "keyword"
+      },
+      "country": {
+        "type": "keyword"
+      },
+      "intended_end_date": {
+        "type": "keyword"
+      },
+      "measures": {
+        "type": "text"
+      }
+    }
+  }
+}

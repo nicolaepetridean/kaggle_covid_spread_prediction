@@ -28,7 +28,6 @@ def write_data_from_dataframe(dataframe, metadata, es_client):
 	def generator():
 		for idx, row in dataframe.iterrows():
 			doc = row.to_dict()
-			doc['trip'] = metadata['trip']
 			yield doc
 	helpers.bulk(es_client, generator(), index=metadata['es_index'])
 

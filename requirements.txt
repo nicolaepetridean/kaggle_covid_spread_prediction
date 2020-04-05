@@ -4,7 +4,6 @@ python-csv
 # Elasticsearch 6.x
 elasticsearch>=6.0.0
 numpy==1.18.1
-protobuf==3.7.1
 pyyaml==5.3.1
 parse==1.15.0
 es-pandas==0.0.10
@@ -13,5 +12,6 @@ jupyter
 matplotlib==3.2.1
 seaborn==0.10.0
 scikit-learn>=0.18
-tqdm==4.19.6
+tqdm==4.45.0
 jupyterthemes==0.15.9
+tensorflow==2.1.0

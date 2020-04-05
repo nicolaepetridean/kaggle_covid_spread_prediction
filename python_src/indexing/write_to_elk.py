@@ -15,10 +15,10 @@ def create_data_structure(elk_client, index_name):
 	return True
 
 
-def elk_connect():
+def elk_connect(config_set):
 	# configure elasticsearch
 	config = {
-		'host': '10.38.4.75'
+		'host': config_set['indexing_server']
 	}
 	return elasticsearch.Elasticsearch([config, ], timeout=300)
 

@@ -14,6 +14,6 @@ inference:
 
 # works only in Porsche Network. for local please edit ip, and install corresponding server.
 indexing:
-  server: localhost
+  server: 10.38.4.75
   port: 9200
   es_index: cntm_measures

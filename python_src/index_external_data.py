@@ -7,8 +7,8 @@ import numpy as np
 
 
 def index_file(file_metadata):
-    elk_client = elk_connect()
     config_set = config.read_yml_config_file('runtime\\run_local.yaml')
+    elk_client = elk_connect(config_set)
     check_mapping_exists(config_set['es_index'], elk_client)
     data = pd.read_csv(file_metadata['file_path'])
 

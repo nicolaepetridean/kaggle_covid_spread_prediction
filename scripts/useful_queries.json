@@ -1,0 +1,20 @@
+GET /spread_country_groups/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match_all": {}
+        }
+      ],
+      "must_not": [],
+      "should": []
+    }
+  },
+  "from": 0,
+  "size": 1000
+}
+
+GET /spread_country_groups/_count
+
+DELETE /spread_country_groups/

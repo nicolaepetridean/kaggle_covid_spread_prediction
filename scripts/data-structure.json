@@ -1,0 +1,69 @@
+PUT /cntm_measures
+{
+  "mappings" : {
+    "properties": {
+      "keywords": {
+        "type": "keyword"
+      },
+      "applies_to": {
+        "type": "keyword"
+      },
+      "start_date": {
+        "type": "keyword"
+      },
+      "country": {
+        "type": "keyword"
+      },
+      "intended_end_date": {
+        "type": "keyword"
+      },
+      "measures": {
+        "type": "text"
+      }
+    }
+  }
+}
+
+PUT /spread_country_groups
+{
+  "mappings" : {
+    "properties": {
+      "Neighbour": {
+        "type": "keyword"
+      },
+      "deathError": {
+        "type": "float"
+      },
+      "confirmedError": {
+        "type": "float"
+      },
+      "deathIdx": {
+        "type": "long"
+      },
+      "confirmedIdx": {
+        "type": "long"
+      },
+      "SourceState": {
+        "type": "keyword"
+      },
+      "NeighbourRank": {
+        "type": "long"
+      },
+      "NeighbourOfType": {
+        "type": "keyword"
+      },
+      "CovidDay2020": {
+        "type": "long"
+      },
+      "cases": {
+        "type": "float"
+      },
+      "daysFromAlignment": {
+        "type": "long"
+      },
+      "date": {
+        "type": "date"
+      }
+    }
+  }
+}

@@ -1,0 +1,20 @@
+# information to config which algorithms should be used while training
+training:
+  input_train_rel_path: 'data\in\train.csv'
+  input_test_rel_path: 'data\in\test.csv'
+  ensemble: False
+  algorithms: xgboost, adaboost
+
+external_data_dir:
+  rel_paths: '..\data\in\external_data'
+
+# only for inference
+inference:
+  output_template_rel_path: 'data\in\submission_example.csv'
+
+# works only in Porsche Network. for local please edit ip, and install corresponding server.
+indexing:
+  server: clpc008
+  port: 9200
+  cntm_measures_es_index: cntm_measures
+  country_grouping_es_index: spread_country_groups

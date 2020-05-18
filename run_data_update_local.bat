@@ -1,0 +1,1 @@
+"D:\jde\projects\COVID-19-Forecast\venv\Scripts\python.exe" "D:\jde\projects\COVID-19-Forecast\scripts\fetch latest_data.py"

@@ -1,0 +1,46 @@
+import elasticsearch
+from elasticsearch import helpers
+
+
+def create_data_structure(elk_client, index_name):
+	"""create necessary data structures to write data to elastic search"""
+
+	print("creating 'logger_data_bulk' index...")
+	try:
+		elk_client.indices.create(index=index_name)
+	except Exception as exception:
+		print("exception while creating + " + exception)
+		return False
+
+	return True
+
+
+def elk_connect(config_set):
+	# configure elasticsearch
+	config = {
+		'host': config_set['indexing_server']
+	}
+	return elasticsearch.Elasticsearch([config, ], timeout=300)
+
+
+def write_data_from_dataframe(dataframe, es_index, es_client):
+	print('pushing {} to elasticsearch'.format(dataframe.columns))
+	def generator():
+		for idx, row in dataframe.iterrows():
+			doc = row.to_dict()
+			yield doc
+	helpers.bulk(es_client, generator(), index=es_index)
+
+
+def check_mapping_exists(index_name, es_client):
+	"""
+	Check if the existing connection to an elastic search server contains a specific mapping
+	:param es_client : client connection to an running elastic search server
+	:param index_name : index name to search for.
+	:return : True/False depending on the index being found
+	"""
+
+	try:
+		return es_client.indices.get_mapping(index=index_name) is not None
+	except:
+		return False

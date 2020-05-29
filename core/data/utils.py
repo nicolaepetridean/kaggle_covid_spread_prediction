@@ -23,18 +23,22 @@ def preprocess_data(df):
     return df
 
 # =============================================== GET TARGET DATA =====================================================
-def get_target_data(allData, errorData, errorThresh, country, target):
+def get_target_data(allData, errorData, errorThresh, country, target, containment = False):
     errName = 'deathError' if target == 'fatalities' else 'confirmedError'
     colName = 'Fatalities' if target == 'fatalities' else 'ConfirmedCases'
 
     errorDf = errorData.sort_values(by=errName)
-
+    
     topConfCountries = errorDf.sort_values(by=errName)
     topConfCountries = topConfCountries[topConfCountries[errName] < errorThresh]
     topConfCountries = topConfCountries['Province_State'].values.tolist()
     topConfCountries.append(country)
-
-    targetCols = ['Date', 'Province_State', colName]
+    
+    categCols  = ['education_closure', 'outdoor_gatherings_banned', 'international travel ban',
+                  'business suspension', 'blanket isolation', 'blanket curfew', 'social distancing'] \
+                if containment else []
+    
+    targetCols = ['Date', 'Province_State', colName] + categCols
     data = pd.DataFrame(columns=targetCols)
 
     for country in topConfCountries:
@@ -84,7 +88,7 @@ def get_train_data(allData, target, trainLimit, winSize, step, scaler = None, sh
     batches = []
     for c in data['Province_State'].unique():
         cVals = data[data['Province_State'] == c][colName].values
-
+        
         for i in range(0, cVals.shape[0] - winSize, step):
             batch = cVals[i:i + winSize].reshape(-1, 1)
             # scale
@@ -102,6 +106,57 @@ def get_train_data(allData, target, trainLimit, winSize, step, scaler = None, sh
         batches[np.array(range(batches.shape[0]))] = batches[order]
 
     return batches
+
+# ================================================= GET TRAIN DATA =====================================================
+def get_train_data_measures(allData, target, trainLimit, winSize, obsSize, step, scaler = None, shuffle = True):
+    '''
+
+    :param allData:     df containing the desired target
+    :param target:      can be confirmed or fatalities
+    :param trainLimit:  only parse data till this date
+    :param winSize:     total window size(observation time + prediction)
+    :param step:        step between considering 2 consecutive batches
+    :param scaler:      scaler used for normalizing data
+    :param shuffle:     shuffle batches
+    :return:
+    '''
+    colName = 'Fatalities' if target == 'fatalities' else 'ConfirmedCases'
+    colNameMeasure =  ['education_closure', 'outdoor_gatherings_banned', 'international travel ban', 
+                       'business suspension', 'blanket isolation', 'blanket curfew', 'social distancing']
+    
+    data = allData[allData['Date'] <= trainLimit]
+
+    # get training batches (sliding window)
+    batches = []
+    batchesMeasures = []
+    for c in data['Province_State'].unique():
+        cVals         = data[data['Province_State'] == c][colName].values
+        cValsMeasures = data[data['Province_State'] == c][colNameMeasure].values
+
+        for i in range(0, cVals.shape[0] - winSize, step):
+            batch = cVals[i:i + winSize].reshape(-1, 1)
+            batchMeasures = cValsMeasures[i+obsSize-1]
+            
+            # scale
+            if scaler is not None:
+                batch = scaler.transform(batch)
+                
+            batches.append(batch)
+            batchesMeasures.append(batchMeasures)
+
+
+    batches       = torch.Tensor(batches).float()
+    batchesMeasures = torch.Tensor(batchesMeasures).float()
+
+    # shuffle input data
+    if shuffle:
+        order = np.array(range(batches.shape[0]))
+        np.random.shuffle(order)
+        batches[np.array(range(batches.shape[0]))] = batches[order]
+        batchesMeasures[np.array(range(batchesMeasures.shape[0]))] = batchesMeasures[order]
+
+    return batches, batchesMeasures
+
 
 # =============================================== GET VAL DATA =========================================================
 def get_val_data(allData, target, country, startFrom, obsSize, scaler = None):
@@ -133,3 +188,43 @@ def get_val_data(allData, target, country, startFrom, obsSize, scaler = None):
     dLabel = torch.Tensor(dLabel.astype(np.float32))
 
     return dPred, dLabel
+
+
+
+# =============================================== GET VAL DATA =========================================================
+def get_val_data_measures(allData, target, country, startFrom, obsSize, scaler = None):
+    '''
+    :param allData:     df containing the desired target
+    :param target:      can be confirmed or fatalities
+    :param country:     target country
+    :param startFrom:   the first prediction will start from this data
+    :param obsSize:     last days until startFrom to be returned for prediction
+    :param scaler:      scaler for normalizing the prediction data
+
+    :return: validation data to be fed to the model and all data from strartFrom point
+    '''
+
+    colName = 'Fatalities' if target == 'fatalities' else 'ConfirmedCases'
+    
+    colNameMeasure =  ['education_closure', 'outdoor_gatherings_banned', 'international travel ban', 
+                   'business suspension', 'blanket isolation', 'blanket curfew', 'social distancing']
+
+    # select data
+    data = allData[allData['Province_State'] == country]
+
+    dataC        = data[data['Date'] >= startFrom - np.timedelta64(obsSize, 'D')][colName].values
+    dataMeasures = data[data['Date'] >= startFrom - np.timedelta64(obsSize, 'D')][colNameMeasure].values
+    
+
+    dPred         = dataC[:obsSize].reshape(-1, 1)
+    dPredMeasures = dataMeasures[obsSize-1]
+    dLabel        = dataC[obsSize:].reshape(-1, 1)
+
+    if scaler is not None:
+        dPred  = scaler.transform(dPred)
+
+    dPred         = torch.Tensor(dPred).unsqueeze(0)
+    dLabel        = torch.Tensor(dLabel.astype(np.float32))
+    dPredMeasures = torch.Tensor(dPredMeasures).unsqueeze(0)
+    
+    return dPred, dLabel, dPredMeasures

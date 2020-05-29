@@ -53,10 +53,11 @@ def get_nearest_sequence(df, state, alignThreshConf=50, alignThreshDead=10, erro
     # get source region data
     regionDfConf = confDf[confDf['Province_State'] == state].sort_values(by='Date', ascending=True)
     regionDfDead = deadDf[deadDf['Province_State'] == state].sort_values(by='Date', ascending=True)
-
+    
+    # check for use diff
     regionConf = regionDfConf['ConfirmedCases'].values
-    regionDead = regionDfDead['Fatalities'].values
-
+    regionDead = regionDfDead['Fatalities'].values 
+    
     # check all possible candidates
     for neighbour in df['Province_State'].unique():
 

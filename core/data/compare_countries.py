@@ -69,7 +69,8 @@ def get_nearest_sequence(df, state, alignThreshConf=50, alignThreshDead=10, erro
         confNeighDf = confDf[confDf['Province_State'] == neighbour].sort_values(by='Date', ascending=True)
         deadNeighDf = deadDf[deadDf['Province_State'] == neighbour].sort_values(by='Date', ascending=True)
 
-        neighConf = confNeighDf['ConfirmedCases'].values
+        values = confNeighDf['ConfirmedCases'].values
+        neighConf = values
         neighDead = deadNeighDf['Fatalities'].values
 
         # get error for confirmed and fatalities

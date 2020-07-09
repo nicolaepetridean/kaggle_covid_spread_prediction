@@ -97,7 +97,8 @@ def get_train_data(allData, target, trainLimit, winSize, step, scaler = None, sh
             batches.append(batch)
 
 
-    batches = torch.Tensor(batches).float()
+    #batches = torch.Tensor(batches).float()
+    batches = np.array(batches, dtype=np.float32)
 
     # shuffle input data
     if shuffle:
@@ -157,7 +158,6 @@ def get_train_data_measures(allData, target, trainLimit, winSize, obsSize, step,
 
     return batches, batchesMeasures
 
-
 # =============================================== GET VAL DATA =========================================================
 def get_val_data(allData, target, country, startFrom, obsSize, scaler = None):
     '''
@@ -184,8 +184,10 @@ def get_val_data(allData, target, country, startFrom, obsSize, scaler = None):
     if scaler is not None:
         dPred  = scaler.transform(dPred)
 
-    dPred  = torch.Tensor(dPred).unsqueeze(0)
-    dLabel = torch.Tensor(dLabel.astype(np.float32))
+    # dPred  = torch.Tensor(dPred).unsqueeze(0)
+    # dLabel = torch.Tensor(dLabel.astype(np.float32))
+
+    dPred = np.expand_dims(dPred, 0)
 
     return dPred, dLabel
 

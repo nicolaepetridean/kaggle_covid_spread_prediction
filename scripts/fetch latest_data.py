@@ -2,12 +2,13 @@ import os
 import argparse
 import pandas as pd
 
-SAVE_PATH = os.path.join('assets', 'covid_spread.csv')
+SAVE_PATH = os.path.join('D:\\jde\\projects\\kaggle_covid_spread_prediction\\assets', 'covid_spread.csv')
 
 CONF_LINK = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19' \
                '_time_series/time_series_covid19_confirmed_global.csv'
 DEAD_LINK = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19' \
                '_time_series/time_series_covid19_deaths_global.csv'
+
 
 if __name__ == '__main__':
 

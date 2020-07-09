@@ -21,6 +21,7 @@ def read_yml_config_file(conf_file):
                     config['indexing_server_port'] = v['port']
                     config['cntm_measures_es_index'] = v['cntm_measures_es_index']
                     config['country_grouping_es_index'] = v['country_grouping_es_index']
+                    config['confirmed_prediction_index'] = v['confirmed_prediction_index']
 
     return config
 

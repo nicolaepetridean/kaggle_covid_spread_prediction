@@ -18,3 +18,4 @@ indexing:
   port: 9200
   cntm_measures_es_index: cntm_measures
   country_grouping_es_index: spread_country_groups
+  confirmed_prediction_index: confirmed_prediction_new_2

@@ -67,3 +67,32 @@ PUT /spread_country_groups
     }
   }
 }
+
+PUT /confirmed_prediction
+{
+  "mappings" : {
+    "properties": {
+      "ProvinceState": {
+        "type": "keyword"
+      },
+      "TrainConfirmations": {
+        "type": "float"
+      },
+      "ConfirmedPrediction": {
+        "type": "float"
+      },
+      "ValidationConfirmations": {
+        "type": "float"
+      },
+      "Date": {
+        "type": "date"
+      },
+      "PredictionDate": {
+        "type": "date"
+      },
+      "DaysFromZero": {
+        "type": "long"
+      }
+    }
+  }
+}

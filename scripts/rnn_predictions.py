@@ -23,9 +23,9 @@ import scripts.config as config
 
 
 
-COUNTRY      = 'France'
+COUNTRY      = 'Romania'
 DEVICE       = 'cpu'
-TRAIN_UP_TO  = pd.to_datetime('2020-06-18')
+TRAIN_UP_TO  = pd.to_datetime('2020-10-10')
 
 allData = pd.read_csv('../assets/covid_spread.csv', parse_dates=['Date'])
 #allData.head()
@@ -200,7 +200,7 @@ start_cases = allData.loc[(allData.Date == TRAIN_UP_TO) & (allData.Province_Stat
 
 # make prediction
 # n_days = confValLabel.shape[0]
-n_days = 14
+n_days = 13
 pred   = predict_future(n_days, arr=confValData)
 pred   = start_cases + np.cumsum(pred)
 
